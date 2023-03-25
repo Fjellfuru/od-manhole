@@ -1,6 +1,6 @@
 import os
 
-from image_preparation.split_image import SplitImage
+from image_preparation.image_splitter import ImageSplitter
 import image_preparation.sort_out_images as soi
 
 source_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid"
@@ -15,6 +15,9 @@ if __name__ == "__main__":
     #        image_list.append(image_path)
     print(image_list)
     for i in image_list:
-        SplitImage(i, dest_dir)
+        print(i)
+        image_splitter = ImageSplitter(i, dest_dir)
+        image_splitter.split()
+        print(f'===================== Finished with {i}')
 
     soi.move_image(dest_dir, dest_di_not_req)
