@@ -9,6 +9,11 @@ im = Image.open(image_path)
 # im_array = np.array(im)
 #im.show()
 
+class DataAugmetation:
+    def __init__(self, image_path: str, da_image_dir: str):
+        self.image_path = image_path
+        self.da_image_dir = da_image_dir
+
 gray_img = im.convert("L")
 gray_img.show()
 

@@ -13,7 +13,6 @@ if __name__ == "__main__":
     #    if image.endswith(".tif"):
     #        image_path = os.path.join(source_dir, image)
     #        image_list.append(image_path)
-    print(image_list)
     for i in image_list:
         print(i)
         image_splitter = ImageSplitter(i, dest_dir)

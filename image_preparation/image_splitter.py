@@ -1,19 +1,14 @@
 import os
+from pathlib import Path
 from typing import Union
 
+import numpy as np
+from osgeo import gdal
 from tqdm import tqdm
 
-from osgeo import gdal
-from osgeo import gdal_array
-
-import numpy as np
-from pathlib import Path
-
-source_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid\swissimage-dop10_2021_2665-1258_0.1_2056.tif"
-dest_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted"
 
 class ImageSplitter:
-    def __init__(self, source_dir, dest_dir):
+    def __init__(self, source_dir: str, dest_dir: str):
         self.source_dir = source_dir
         self.dest_dir = dest_dir
         self.crop_size = 1000
@@ -32,7 +27,7 @@ class ImageSplitter:
                 count += 1
                 crop_img = self.image[:, h:h + self.crop_size, w: w + self.crop_size]
                 crop_image_name = f"{self.file_name}{'_'}{count}{self.ext}"
-                crop_image_path = Path(dest_dir) / crop_image_name
+                crop_image_path = Path(self.dest_dir) / crop_image_name
                 self._save_image_geotiff(crop_img, new_geotrans, self.proj, str(crop_image_path))
                 pbar.update(1)
 
@@ -42,7 +37,7 @@ class ImageSplitter:
         :return:
         """
         self.dataset = gdal.Open(self.source_dir, gdal.GA_ReadOnly)
-        self.image =self.dataset.ReadAsArray()  # get the rasterArray
+        self.image = self.dataset.ReadAsArray()  # get the rasterArray
         # convert 2D raster to [1, H, W] format
         if len(self.image.shape) == 2:
             self.image = self.image[np.newaxis, :, :]
@@ -55,8 +50,8 @@ class ImageSplitter:
         H = self.image.shape[1]
         W = self.image.shape[2]
 
-        n_rows = int((H - self.crop_size)/self.stride + 1)
-        n_cols = int((W - self.crop_size)/self.stride + 1)
+        n_rows = int((H - self.crop_size) / self.stride + 1)
+        n_cols = int((W - self.crop_size) / self.stride + 1)
 
         xmin = self.geotrans[0]
         ymax = self.geotrans[3]
@@ -65,15 +60,21 @@ class ImageSplitter:
         xlen = res * self.dataset.RasterXSize
         ylen = res * self.dataset.RasterYSize
 
-        xsize = xlen/n_rows
-        ysize = ylen/n_cols
+        xsize = xlen / n_rows
+        ysize = ylen / n_cols
 
-        xsteps = [xmin + xsize * i for i in range(n_rows+1)]
-        ysteps = [ymax - ysize * i for i in range(n_cols+1)]
+        xsteps = [xmin + xsize * i for i in range(n_rows + 1)]
+        ysteps = [ymax - ysize * i for i in range(n_cols + 1)]
 
         return n_rows, n_cols, xsteps, ysteps
 
-    def _generate_tiles(self, n_rows: int, n_cols: int, xsteps: list[int], ysteps: list[int]) -> (int, int, Union[int, float]):
+    def _generate_tiles(
+            self,
+            n_rows: int,
+            n_cols: int,
+            xsteps: list[int],
+            ysteps: list[int]
+    ) -> (int, int, Union[int, float]):
         for idh in range(n_rows):
             h = idh * self.stride
             ymax = ysteps[idh]
@@ -95,7 +96,7 @@ class ImageSplitter:
         self.file_name = os.path.splitext(os.path.basename(self.source_dir))[0]
 
         # get image suffix
-        self.ext = Path(source_dir).suffix
+        self.ext = Path(self.source_dir).suffix
         # check output folder, if not exists, creat it.
         Path(self.dest_dir).mkdir(parents=True, exist_ok=True)
 
@@ -123,11 +124,13 @@ class ImageSplitter:
         elif len(im_data.shape) == 2:
             im_data = np.array([im_data])
             im_bands, im_height, im_width = im_data.shape
+        else:
+            raise Exception('Unknown number of bands')
 
         driver = gdal.GetDriverByName("GTiff")
         dataset = driver.Create(file_name, int(im_width), int(
             im_height), int(im_bands), datatype)
-        if(dataset != None):
+        if dataset is not None:
             dataset.SetGeoTransform(im_geotrans)
             dataset.SetProjection(im_proj)
         for i in range(im_bands):
