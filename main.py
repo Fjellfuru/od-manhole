@@ -2,6 +2,7 @@ import os
 
 from image_preparation.image_splitter import ImageSplitter
 import image_preparation.sort_out_images as soi
+from data_augmentation.data_augmentation import DataAugmentation
 
 source_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid"
 dest_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted"
@@ -14,9 +15,12 @@ if __name__ == "__main__":
     #        image_path = os.path.join(source_dir, image)
     #        image_list.append(image_path)
     for i in image_list:
-        print(i)
         image_splitter = ImageSplitter(i, dest_dir)
         image_splitter.split()
-        print(f'===================== Finished with {i}')
 
-    soi.move_image(dest_dir, dest_di_not_req)
+    #soi.move_image(dest_dir, dest_di_not_req)
+
+    image_list_da = [os.path.join(dest_dir, image) for image in os.listdir(dest_dir) if image.endswith(".tif")]
+    for i in image_list_da:
+        image_data_augmentation = DataAugmentation(i, dest_dir)
+        image_data_augmentation.transform_images()
