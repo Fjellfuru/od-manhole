@@ -15,9 +15,9 @@ class ImageCropper:
         crop the original imagage and set georeferencing to cropped image
         :return:
         """
-        self._get_new_geotransform()
+        new_minx, new_maxy, new_maxx, new_miny = self._get_new_geotransform()
         self._crop_10_10_image()
-        self._set_georeferencing()
+        self._set_georeferencing(new_minx, new_maxy, new_maxx, new_miny)
         self._remove_not_georeferencd_file()
 
     def _get_new_geotransform(self):

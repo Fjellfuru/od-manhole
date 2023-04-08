@@ -4,10 +4,6 @@ from image_preparation.image_splitter import ImageSplitter
 import image_preparation.sort_out_images as soi
 from data_augmentation.data_augmentation import DataAugmentation
 
-#source_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid"
-#dest_dir = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted"
-#dest_di_not_req = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\not_required"
-
 dir_orig = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_Test"
 dir_cropped = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_cropped"
 dir_splitted = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted_Test"

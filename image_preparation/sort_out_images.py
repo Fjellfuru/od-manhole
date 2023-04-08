@@ -8,7 +8,7 @@ from sqlalchemy import create_engine, text
 def move_image(source_dir, dest_dir):
     engine = create_engine("postgresql+psycopg2://postgres@localhost/mas_ds")
     conn = engine.connect()
-    query = text("SELECT CONCAT(image, '_', image_nr, '.tif') FROM public.grid WHERE required = 1")
+    query = text("SELECT CONCAT(image, '_cropped_', image_nr, '.tif') FROM public.grid WHERE required = 1")
     not_required_cell = pd.read_sql_query(query, conn)
 
     result_list = not_required_cell.values.tolist()
