@@ -11,7 +11,7 @@ class ImageSplitter:
     def __init__(self, source_dir: str, dest_dir: str):
         self.source_dir = source_dir
         self.dest_dir = dest_dir
-        self.crop_size = 1000
+        self.crop_size = 992
         self.repetition_rate = 0
         self.overwrite = False
         self.stride = int(self.crop_size * (1 - self.repetition_rate))

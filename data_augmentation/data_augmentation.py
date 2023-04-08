@@ -6,8 +6,6 @@ from PIL import ImageFilter
 from PIL import ImageEnhance
 
 
-# im_array = np.array(im)
-#im.show()
 
 class DataAugmentation:
     def __init__(self, image_path: str, da_image_dir: str):
