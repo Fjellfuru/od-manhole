@@ -4,10 +4,10 @@ from image_preparation.image_splitter import ImageSplitter
 import image_preparation.sort_out_images as soi
 from data_augmentation.data_augmentation import DataAugmentation
 
-dir_orig = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_Test"
+dir_orig = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid"
 dir_cropped = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_cropped"
-dir_splitted = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted_Test"
-dest_di_not_req = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted_Test\not_required"
+dir_splitted = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted"
+dest_di_not_req = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\not_required"
 
 if __name__ == "__main__":
     image_list_orig = [os.path.join(dir_orig, image) for image in os.listdir(dir_orig) if image.endswith(".tif")]
