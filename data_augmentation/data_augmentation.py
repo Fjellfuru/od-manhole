@@ -16,7 +16,7 @@ class DataAugmentation:
     def transform_images(self):
         self.transform_image_to_greyscale()
         self.switch_rgb_bands_to_bgr()
-        self.switch_rgb_bands_to_bgr()
+        self.switch_rgb_bands_to_grb()
         self.increase_contrast()
         self.decrease_contrast()
 
