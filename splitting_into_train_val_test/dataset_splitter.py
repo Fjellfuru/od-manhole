@@ -19,16 +19,20 @@ class DatasetSplitter:
 
 
     def split_dataset(self):
+        """
+        split image dataset and label dataset into train, val and test dataset
+        :return:
+        """
         train_images, val_images, test_images = self._split_image_list()
         train_labels = self._create_corresponding_label_list(train_images, self.source_dir_labels)
         val_labels = self._create_corresponding_label_list(val_images, self.source_dir_labels)
         test_labels = self._create_corresponding_label_list(test_images, self.source_dir_labels)
-        self.move_files(train_images, self.dir_train, 'images')
-        self.move_files(train_labels, self.dir_train, 'labels')
-        self.move_files(val_images, self.dir_train, 'images')
-        self.move_files(val_labels, self.dir_train, 'labels')
-        self.move_files(test_images, self.dir_train, 'images')
-        self.move_files(test_labels, self.dir_train, 'labels')
+        self._move_files(train_images, self.dir_train, 'images')
+        self._move_files(train_labels, self.dir_train, 'labels')
+        self._move_files(val_images, self.dir_val, 'images')
+        self._move_files(val_labels, self.dir_val, 'labels')
+        self._move_files(test_images, self.dir_test, 'images')
+        self._move_files(test_labels, self.dir_test, 'labels')
 
     def _split_image_list(self):
         """
@@ -69,7 +73,7 @@ class DatasetSplitter:
             label_list.append(label_path)
         return label_list
 
-    def move_files(self, file_list: list, dest_dir: str, file_type: str):
+    def _move_files(self, file_list: list, dest_dir: str, file_type: str):
         for e in file_list:
             source_dir = e
             dest_dir = dest_dir
@@ -77,7 +81,9 @@ class DatasetSplitter:
                 ext = Path(source_dir).suffix
                 file_name = os.path.splitext(os.path.basename(e))[0]
                 dest_file = os.path.join(dest_dir, file_type, file_name + ext)
-                print(dest_file)
+                if not os.path.exists(os.path.join(dest_dir, file_type)):
+                    os.makedirs(os.path.join(dest_dir, file_type))
+                shutil.move(source_dir, dest_file)
 
 
 

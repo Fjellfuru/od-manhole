@@ -5,8 +5,7 @@ from sqlalchemy import create_engine, text
 
 
 class ImageLabeler:
-    def __init__(self, source_dir: str, dest_dir: str):
-        self.source_dir = source_dir
+    def __init__(self, dest_dir: str):
         self.dest_dir = dest_dir
         self.engine = create_engine("postgresql+psycopg2://postgres@localhost/mas_ds")
         self.conn = self.engine.connect()
