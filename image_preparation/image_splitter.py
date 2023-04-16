@@ -45,6 +45,10 @@ class ImageSplitter:
         self.geotrans = self.dataset.GetGeoTransform()
 
     def _get_image_properties(self):
+        """
+        return image properties to generate tiles
+        :return:
+        """
         print(f"{self.crop_size=}, {self.stride=}")
 
         H = self.image.shape[1]
