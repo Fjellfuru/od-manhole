@@ -11,7 +11,7 @@ class ImageLabeler:
         self.conn = self.engine.connect()
 
     def create_label_file(self):
-        query_image = text("SELECT CONCAT(image, '_cropped_', image_nr) AS image FROM public.grid WHERE required = 0")
+        query_image = text("SELECT CONCAT(image, '_cropped_', image_nr) AS image FROM public.grid WHERE corrected = 1")
         not_required_cell = pd.read_sql_query(query_image, self.conn)
 
         image_list = not_required_cell.values.tolist()
@@ -19,7 +19,7 @@ class ImageLabeler:
         for i in image_list:
             image = i[0]
             query = text(f"""SELECT label_id, nxpos_center_px, nypos_center_px, nwidth_px, nheigth_px "
-                         "FROM public.v_manhole_label_yolo WHERE image = '{image}'""")
+                         "FROM public.v_manhole_label_yolo WHERE corrected = 1 AND image = '{image}'""")
             image_labels = pd.read_sql_query(query, self.conn)
 
             # label-file for orig-image
