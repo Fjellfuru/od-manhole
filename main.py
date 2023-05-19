@@ -19,9 +19,9 @@ execute_cropper: str = 'no'
 execute_image_splitter: str = 'no'
 execute_image_sorter_not_requiered: str = 'no'
 execute_data_augmentation: str = 'no'
-execute_image_sorter_corrected: str = 'yes'
-execute_labeler: str = 'yes'
-execute_dataset_splitter: str = 'yes'
+execute_image_sorter_corrected: str = 'no'
+execute_labeler: str = 'no'
+execute_dataset_splitter: str = 'no'
 
 if __name__ == "__main__":
     if execute_cropper == 'yes':

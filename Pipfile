@@ -11,6 +11,7 @@ sqlalchemy = "*"
 numpy = "*"
 tqdm = "*"
 rasterio = "*"
+ultralytics = "*"
 
 [dev-packages]
 

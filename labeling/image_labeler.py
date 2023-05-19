@@ -42,9 +42,17 @@ class ImageLabeler:
             label_file_cp2 = Path(self.dest_dir) / f"{image}{'_cp2'}{'.txt'}"
             image_labels.to_csv(label_file_cp2, sep=' ', header=False, index=False)
 
-            # label-file for cm2-image
-            label_file_cm2 = Path(self.dest_dir) / f"{image}{'_cm2'}{'.txt'}"
-            image_labels.to_csv(label_file_cm2, sep=' ', header=False, index=False)
+            # label-file for cm1-image
+            label_file_cm1 = Path(self.dest_dir) / f"{image}{'_cm1'}{'.txt'}"
+            image_labels.to_csv(label_file_cm1, sep=' ', header=False, index=False)
+
+            # label-file for sh-image
+            label_file_sh = Path(self.dest_dir) / f"{image}{'_sh'}{'.txt'}"
+            image_labels.to_csv(label_file_sh, sep=' ', header=False, index=False)
+
+            # label-file for escp2-image
+            label_file_escp2 = Path(self.dest_dir) / f"{image}{'_escp2'}{'.txt'}"
+            image_labels.to_csv(label_file_escp2, sep=' ', header=False, index=False)
 
         print('label-files created')
 

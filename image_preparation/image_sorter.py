@@ -70,8 +70,14 @@ class ImageSorter:
             # image name for cp2-image
             image_cp2 = f"{image}{'_cp2'}{'.tif'}"
 
-            # image name for cm2-image
-            image_cm2 = f"{image}{'_cm2'}{'.tif'}"
+            # image name for cm1-image
+            image_cm1 = f"{image}{'_cm1'}{'.tif'}"
+
+            # image name for sh-image
+            image_sh = f"{image}{'_sh'}{'.tif'}"
+
+            # image name for escp2-image
+            image_escp2 = f"{image}{'_escp2'}{'.tif'}"
 
             # add all image names to image-list
             image_list.append(image_orig)
@@ -79,7 +85,9 @@ class ImageSorter:
             image_list.append(image_bgr)
             image_list.append(image_grb)
             image_list.append(image_cp2)
-            image_list.append(image_cm2)
+            image_list.append(image_cm1)
+            image_list.append(image_sh)
+            image_list.append(image_escp2)
 
         print(len(image_list))
         self._move_prepared_image(image_list, source_dir, dest_dir)
