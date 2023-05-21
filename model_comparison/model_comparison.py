@@ -196,3 +196,24 @@ plt.xlabel('Epoche')
 plt.legend()
 plt.show()
 plt.cla()
+
+
+metrics_yolov8s_1632_100_8 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_8\test_val\metrics_per_class.csv")
+metrics_yolov8s_1632_100_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_16\test_val\metrics_per_class.csv")
+metrics_yolov8m_1632_100_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_1632_100_16\test_val\metrics_per_class.csv")
+metrics_yolov8m_3408_150_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_3408_150_16\test_val\metrics_per_class.csv")
+metrics_yolov8m_4524_150_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_4524_150_16\test_val\metrics_per_class.csv")
+metrics_yolov8m_6040_150_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_811\test_val\metrics_per_class.csv")
+metrics_yolov8m_6040_150_16_721 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_721\test_val\metrics_per_class.csv")
+
+
+metrics_yolov8s_1632_100_8['Box_P'].plot(label='yolov8s_3408_150_16', color='blue')
+
+
+# adding title to the plot
+plt.title('Vergleich Box-Loss')
+
+# adding legend to the curve
+plt.legend()
+plt.show()
+plt.cla()
