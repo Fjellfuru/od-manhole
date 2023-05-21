@@ -21,7 +21,7 @@ execute_image_sorter_not_requiered: str = 'no'
 execute_data_augmentation: str = 'no'
 execute_image_sorter_corrected: str = 'no'
 execute_labeler: str = 'no'
-execute_dataset_splitter: str = 'no'
+execute_dataset_splitter: str = 'yes'
 
 if __name__ == "__main__":
     if execute_cropper == 'yes':
@@ -71,7 +71,7 @@ if __name__ == "__main__":
         pass
 
     if execute_dataset_splitter == 'yes':
-        dataset_split = DatasetSplitter(dir_corrected_grid, dir_label, dir_dataset_train_model)
+        dataset_split = DatasetSplitter(dir_corrected_grid, dir_label, dir_dataset_train_model, 0.7, 0.9)
         dataset_split.split_dataset()
     else:
         pass

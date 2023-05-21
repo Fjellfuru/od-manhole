@@ -9,10 +9,12 @@ dir_train_model = r"D:\MAS_DataScience\aerial_images_train_model"
 
 
 class DatasetSplitter:
-    def __init__(self, source_dir_images: str, source_dir_labels: str, dest_dir_train_model: str):
+    def __init__(self, source_dir_images: str, source_dir_labels: str, dest_dir_train_model: str, split_train: float, split_val: float):
         self.source_dir_images = source_dir_images
         self.source_dir_labels = source_dir_labels
         self.dest_dir_train_model = dest_dir_train_model
+        self.split_train = split_train
+        self.split_val = split_val
         self.dir_train = os.path.join(self.dest_dir_train_model, 'train')
         self.dir_val = os.path.join(self.dest_dir_train_model, 'val')
         self.dir_test = os.path.join(self.dest_dir_train_model, 'test')
@@ -47,8 +49,8 @@ class DatasetSplitter:
         random.seed(230)
         random.shuffle(image_list) # shuffles the ordering of filenames (deterministic given the chosen seed)
 
-        split_1 = int(0.8 * len(image_list))
-        split_2 = int(0.9 * len(image_list))
+        split_1 = int(self.split_train * len(image_list))
+        split_2 = int(self.split_val * len(image_list))
         train_images: list = image_list[:split_1]
         val_images: list = image_list[split_1:split_2]
         test_images: list = image_list[split_2:]
