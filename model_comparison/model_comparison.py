@@ -1,5 +1,7 @@
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
+import seaborn as sns
 import os
 
 HOME = r"D:\MAS_DataScience\training"
@@ -32,17 +34,20 @@ def plot_results_overlay(result_csv: str, result_title: str):
 plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_811/results.csv'), 'M-150-16 6040 Images Split 811')
 plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_721/results.csv'), 'M-150-16 6040 Images Split 721')
 
-yolov8s_3408_150_16 = pd.read_csv(os.path.join(HOME, 'yolov8s_3408_150_16/results.csv'))
-yolov8s_3408_150_16.columns = yolov8s_3408_150_16.columns.str.lstrip()
+yolov8s_1632_100_8_811 = pd.read_csv(os.path.join(HOME, 'yolov8s_1632_100_8_811/results.csv'))
+yolov8s_1632_100_8_811.columns = yolov8s_1632_100_8_811.columns.str.lstrip()
 
-yolov8m_3408_150_16 = pd.read_csv(os.path.join(HOME, 'yolov8m_3408_150_16/results.csv'))
-yolov8m_3408_150_16.columns = yolov8m_3408_150_16.columns.str.lstrip()
+yolov8s_1632_100_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8s_1632_100_16_811/results.csv'))
+yolov8s_1632_100_16_811.columns = yolov8s_1632_100_16_811.columns.str.lstrip()
 
-yolov8s_3408_150_64 = pd.read_csv(os.path.join(HOME, 'yolov8s_3408_150_64/results.csv'))
-yolov8s_3408_150_64.columns = yolov8s_3408_150_64.columns.str.lstrip()
+yolov8m_1632_100_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_1632_100_16_811/results.csv'))
+yolov8m_1632_100_16_811.columns = yolov8m_1632_100_16_811.columns.str.lstrip()
 
-yolov8m_4524_150_16 = pd.read_csv(os.path.join(HOME, 'yolov8m_4524_150_16/results.csv'))
-yolov8m_4524_150_16.columns = yolov8m_4524_150_16.columns.str.lstrip()
+yolov8m_3408_150_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_3408_150_16_811/results.csv'))
+yolov8m_3408_150_16_811.columns = yolov8m_3408_150_16_811.columns.str.lstrip()
+
+yolov8m_4524_150_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_4524_150_16_811/results.csv'))
+yolov8m_4524_150_16_811.columns = yolov8m_4524_150_16_811.columns.str.lstrip()
 
 yolov8m_6040_150_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_6040_150_16_811/results.csv'))
 yolov8m_6040_150_16_811.columns = yolov8m_6040_150_16_811.columns.str.lstrip()
@@ -50,10 +55,11 @@ yolov8m_6040_150_16_811.columns = yolov8m_6040_150_16_811.columns.str.lstrip()
 yolov8m_6040_150_16_721 = pd.read_csv(os.path.join(HOME, 'yolov8m_6040_150_16_721/results.csv'))
 yolov8m_6040_150_16_721.columns = yolov8m_6040_150_16_721.columns.str.lstrip()
 
-yolov8s_3408_150_16['metrics/mAP50(B)'].plot(label='yolov8s_3408_150_16', color='orange')
-yolov8m_3408_150_16['metrics/mAP50(B)'].plot(label='yolov8m_3408_150_16', color='blue')
-yolov8s_3408_150_64['metrics/mAP50(B)'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['metrics/mAP50(B)'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['metrics/mAP50(B)'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['metrics/mAP50(B)'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['metrics/mAP50(B)'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['metrics/mAP50(B)'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['metrics/mAP50(B)'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['metrics/mAP50(B)'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['metrics/mAP50(B)'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
 
@@ -69,10 +75,11 @@ plt.show()
 plt.cla()
 
 
-yolov8s_3408_150_16['metrics/mAP50-95(B)'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['metrics/mAP50-95(B)'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['metrics/mAP50-95(B)'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['metrics/mAP50-95(B)'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['metrics/mAP50-95(B)'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['metrics/mAP50-95(B)'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['metrics/mAP50-95(B)'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['metrics/mAP50-95(B)'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['metrics/mAP50-95(B)'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['metrics/mAP50-95(B)'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['metrics/mAP50-95(B)'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
 
@@ -87,10 +94,11 @@ plt.legend()
 plt.show()
 plt.cla()
 
-yolov8s_3408_150_16['metrics/recall(B)'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['metrics/recall(B)'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['metrics/recall(B)'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['metrics/recall(B)'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['metrics/recall(B)'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['metrics/recall(B)'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['metrics/recall(B)'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['metrics/recall(B)'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['metrics/recall(B)'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['metrics/recall(B)'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['metrics/recall(B)'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
 
@@ -105,10 +113,11 @@ plt.legend()
 plt.show()
 plt.cla()
 
-yolov8s_3408_150_16['metrics/precision(B)'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['metrics/precision(B)'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['metrics/precision(B)'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['metrics/precision(B)'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['metrics/precision(B)'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['metrics/precision(B)'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['metrics/precision(B)'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['metrics/precision(B)'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['metrics/precision(B)'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['metrics/precision(B)'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['metrics/precision(B)'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
 
@@ -123,16 +132,18 @@ plt.legend()
 plt.show()
 plt.cla()
 
-yolov8s_3408_150_16['val/dfl_loss'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['val/dfl_loss'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['val/dfl_loss'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['val/dfl_loss'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['val/dfl_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['val/dfl_loss'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['val/dfl_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['val/dfl_loss'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['val/dfl_loss'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['val/dfl_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['val/dfl_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
-yolov8s_3408_150_16['train/dfl_loss'].plot(label='yolov8s_3408_150_16', color='blue', linestyle='dashed')
-yolov8m_3408_150_16['train/dfl_loss'].plot(label='yolov8m_3408_150_16', color='orange', linestyle='dashed')
-yolov8s_3408_150_64['train/dfl_loss'].plot(label='yolov8s_3408_150_64', color='cyan', linestyle='dashed')
-yolov8m_4524_150_16['train/dfl_loss'].plot(label='yolov8m_4524_150_16', color='red', linestyle='dashed')
+yolov8s_1632_100_8_811['train/dfl_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue', linestyle='dashed')
+yolov8s_1632_100_16_811['train/dfl_loss'].plot(label='yolov8s_1632_100_16_811', color='blue', linestyle='dashed')
+yolov8m_1632_100_16_811['train/dfl_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan', linestyle='dashed')
+yolov8m_3408_150_16_811['train/dfl_loss'].plot(label='yolov8m_3408_150_16_811', color='orange', linestyle='dashed')
+yolov8m_4524_150_16_811['train/dfl_loss'].plot(label='yolov8m_4524_150_16_811', color='red', linestyle='dashed')
 yolov8m_6040_150_16_811['train/dfl_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta', linestyle='dashed')
 yolov8m_6040_150_16_721['train/dfl_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet', linestyle='dashed')
 
@@ -148,16 +159,18 @@ plt.legend()
 plt.show()
 plt.cla()
 
-yolov8s_3408_150_16['val/cls_loss'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['val/cls_loss'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['val/cls_loss'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['val/cls_loss'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['val/cls_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['val/cls_loss'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['val/cls_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['val/cls_loss'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['val/cls_loss'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['val/cls_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['val/cls_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
-yolov8s_3408_150_16['train/cls_loss'].plot(label='yolov8s_3408_150_16', color='blue', linestyle='dashed')
-yolov8m_3408_150_16['train/cls_loss'].plot(label='yolov8m_3408_150_16', color='orange', linestyle='dashed')
-yolov8s_3408_150_64['train/cls_loss'].plot(label='yolov8s_3408_150_64', color='cyan', linestyle='dashed')
-yolov8m_4524_150_16['train/cls_loss'].plot(label='yolov8m_4524_150_16', color='red', linestyle='dashed')
+yolov8s_1632_100_8_811['train/cls_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue', linestyle='dashed')
+yolov8s_1632_100_16_811['train/cls_loss'].plot(label='yolov8s_1632_100_16_811', color='blue', linestyle='dashed')
+yolov8m_1632_100_16_811['train/cls_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan', linestyle='dashed')
+yolov8m_3408_150_16_811['train/cls_loss'].plot(label='yolov8m_3408_150_16_811', color='orange', linestyle='dashed')
+yolov8m_4524_150_16_811['train/cls_loss'].plot(label='yolov8m_4524_150_16_811', color='red', linestyle='dashed')
 yolov8m_6040_150_16_811['train/cls_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta', linestyle='dashed')
 yolov8m_6040_150_16_721['train/cls_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet', linestyle='dashed')
 
@@ -172,19 +185,20 @@ plt.legend()
 plt.show()
 plt.cla()
 
-yolov8s_3408_150_16['val/box_loss'].plot(label='yolov8s_3408_150_16', color='blue')
-yolov8m_3408_150_16['val/box_loss'].plot(label='yolov8m_3408_150_16', color='orange')
-yolov8s_3408_150_64['val/box_loss'].plot(label='yolov8s_3408_150_64', color='cyan')
-yolov8m_4524_150_16['val/box_loss'].plot(label='yolov8m_4524_150_16', color='red')
+yolov8s_1632_100_8_811['val/box_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue')
+yolov8s_1632_100_16_811['val/box_loss'].plot(label='yolov8s_1632_100_16_811', color='blue')
+yolov8m_1632_100_16_811['val/box_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan')
+yolov8m_3408_150_16_811['val/box_loss'].plot(label='yolov8m_3408_150_16_811', color='orange')
+yolov8m_4524_150_16_811['val/box_loss'].plot(label='yolov8m_4524_150_16_811', color='red')
 yolov8m_6040_150_16_811['val/box_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta')
 yolov8m_6040_150_16_721['val/box_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet')
-yolov8s_3408_150_16['train/box_loss'].plot(label='yolov8s_3408_150_16', color='blue', linestyle='dashed')
-yolov8m_3408_150_16['train/box_loss'].plot(label='yolov8m_3408_150_16', color='orange', linestyle='dashed')
-yolov8s_3408_150_64['train/box_loss'].plot(label='yolov8s_3408_150_64', color='cyan', linestyle='dashed')
-yolov8m_4524_150_16['train/box_loss'].plot(label='yolov8m_4524_150_16', color='red', linestyle='dashed')
+yolov8s_1632_100_8_811['train/box_loss'].plot(label='yolov8s_1632_100_8_811', color='deepskyblue', linestyle='dashed')
+yolov8s_1632_100_16_811['train/box_loss'].plot(label='yolov8s_1632_100_16_811', color='blue', linestyle='dashed')
+yolov8m_1632_100_16_811['train/box_loss'].plot(label='yolov8m_1632_100_16_811', color='cyan', linestyle='dashed')
+yolov8m_3408_150_16_811['train/box_loss'].plot(label='yolov8m_3408_150_16_811', color='orange', linestyle='dashed')
+yolov8m_4524_150_16_811['train/box_loss'].plot(label='yolov8m_4524_150_16_811', color='red', linestyle='dashed')
 yolov8m_6040_150_16_811['train/box_loss'].plot(label='yolov8m_6040_150_16_811', color='magenta', linestyle='dashed')
 yolov8m_6040_150_16_721['train/box_loss'].plot(label='yolov8m_6040_150_16_721', color='darkviolet', linestyle='dashed')
-
 
 # adding title to the plot
 plt.title('Vergleich Box-Loss')
@@ -198,22 +212,89 @@ plt.show()
 plt.cla()
 
 
-metrics_yolov8s_1632_100_8 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_8\test_val\metrics_per_class.csv")
-metrics_yolov8s_1632_100_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_16\test_val\metrics_per_class.csv")
-metrics_yolov8m_1632_100_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_1632_100_16\test_val\metrics_per_class.csv")
-metrics_yolov8m_3408_150_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_3408_150_16\test_val\metrics_per_class.csv")
-metrics_yolov8m_4524_150_16 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_4524_150_16\test_val\metrics_per_class.csv")
-metrics_yolov8m_6040_150_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_811\test_val\metrics_per_class.csv")
-metrics_yolov8m_6040_150_16_721 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_721\test_val\metrics_per_class.csv")
+def compare_test_val():
 
+  metrics_yolov8s_1632_100_8_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_8_811\test_val"
+                                               r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8s_1632_100_8_811['model'] = 's_1632_100_8_811'
 
-metrics_yolov8s_1632_100_8['Box_P'].plot(label='yolov8s_3408_150_16', color='blue')
+  metrics_yolov8s_1632_100_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8s_1632_100_16_811\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8s_1632_100_16_811['model'] = 's_1632_100_16_811'
 
+  metrics_yolov8m_1632_100_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_1632_100_16_811\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8m_1632_100_16_811['model'] = 'm_1632_100_16_811'
 
-# adding title to the plot
-plt.title('Vergleich Box-Loss')
+  metrics_yolov8m_3408_150_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_3408_150_16_811\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8m_3408_150_16_811['model'] = 'm_3408_150_16_811'
 
-# adding legend to the curve
-plt.legend()
-plt.show()
-plt.cla()
+  metrics_yolov8m_4524_150_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_4524_150_16_811\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8m_4524_150_16_811['model'] = 'm_4524_150_16_811'
+
+  metrics_yolov8m_6040_150_16_811 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_811\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8m_6040_150_16_811['model'] = 'm_6040_150_16_811'
+
+  metrics_yolov8m_6040_150_16_721 = pd.read_csv(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_721\test_val"
+                                                r"\metrics_per_class.csv", sep=';')
+  metrics_yolov8m_6040_150_16_721['model'] = 'm_6040_150_16_721'
+
+  df_model_testval = pd.concat(
+    [metrics_yolov8s_1632_100_8_811, metrics_yolov8s_1632_100_16_811, metrics_yolov8m_1632_100_16_811,
+     metrics_yolov8m_3408_150_16_811, metrics_yolov8m_4524_150_16_811, metrics_yolov8m_6040_150_16_811,
+     metrics_yolov8m_6040_150_16_721])
+
+  # Precision
+  sns.set_style('whitegrid')
+  ax = sns.barplot(data=df_model_testval, x="Class", y="Box_P", hue="model")
+  ax.set_yticks(np.arange(0, 1.1, 0.1))
+  ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
+  ax.set_yticklabels(ax.get_yticklabels(), size=8)
+  ax.set(xlabel=None, ylabel='Precision')
+  plt.subplots_adjust(right=0.72, bottom=0.3)
+  plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=8)
+  plt.title('Vergleich Precision')
+  plt.show()
+  plt.cla()
+
+  # Recall
+  sns.set_style('whitegrid')
+  ax = sns.barplot(data=df_model_testval, x="Class", y="Box_R", hue="model")
+  ax.set_yticks(np.arange(0, 1.1, 0.1))
+  ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
+  ax.set_yticklabels(ax.get_yticklabels(), size=8)
+  ax.set(xlabel=None, ylabel='Recall')
+  plt.subplots_adjust(right=0.72, bottom=0.3)
+  plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=8)
+  plt.title('Vergleich Recall')
+  plt.show()
+  plt.cla()
+
+  # Box_mAP50
+  sns.set_style('whitegrid')
+  ax = sns.barplot(data=df_model_testval, x="Class", y="Box_mAP50", hue="model")
+  ax.set_yticks(np.arange(0, 1.1, 0.1))
+  ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
+  ax.set_yticklabels(ax.get_yticklabels(), size=8)
+  ax.set(xlabel=None, ylabel='Recall')
+  plt.subplots_adjust(right=0.72, bottom=0.3)
+  plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=8)
+  plt.title('Vergleich mAP50')
+  plt.show()
+  plt.cla()
+
+  # Box_mAP50-95
+  sns.set_style('whitegrid')
+  ax = sns.barplot(data=df_model_testval, x="Class", y="Box_mAP50-95", hue="model")
+  ax.set_yticks(np.arange(0, 1.1, 0.1))
+  ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
+  ax.set_yticklabels(ax.get_yticklabels(), size=8)
+  ax.set(xlabel=None, ylabel='Recall')
+  plt.subplots_adjust(right=0.72, bottom=0.3)
+  plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=8)
+  plt.title('Vergleich mAP50-95')
+  plt.show()
+  plt.cla()
