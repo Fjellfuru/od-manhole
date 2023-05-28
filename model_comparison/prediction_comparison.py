@@ -1,61 +1,128 @@
-import os
-from pathlib import Path
-from PIL import Image
-from PIL import ImageFilter
-from PIL import ImageEnhance
-from osgeo import gdal
-import rasterio as rio
 import pandas as pd
-from ultralytics import YOLO
+import numpy as np
+from matplotlib import pyplot as plt
+import seaborn as sns
+import os
 
-# from IPython.display import display, Image
+resulttest_yolov8s_1632_100_8_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8s_1632_100_8_811\test_val"
+                                                 r"\predictions.json")
+resulttest_yolov8s_1632_100_8_811['model'] = 's_1632_100_8_811'
 
+resulttest_yolov8s_1632_100_16_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8s_1632_100_16_811\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8s_1632_100_16_811['model'] = 's_1632_100_16_811'
 
-model = YOLO(f"D:\MAS_DataScience\yolo_manhole\yolov8m_6040_150_16_721.pt")
-image_orig = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2602-1200_0.1_2056_cropped_60.tif'
-image = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2602-1200_0.1_2056_cropped_60_escp2.tif'
+resulttest_yolov8m_1632_100_16_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8m_1632_100_16_811\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8m_1632_100_16_811['model'] = 'm_1632_100_16_811'
 
-dataset = gdal.Open(image_orig, gdal.GA_ReadOnly)
-geotrans = dataset.GetGeoTransform()
+resulttest_yolov8m_3408_150_16_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8m_3408_150_16_811\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8m_3408_150_16_811['model'] = 'm_3408_150_16_811'
 
-minx = geotrans[0]
-maxy = geotrans[3]
+resulttest_yolov8m_4524_150_16_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8m_4524_150_16_811\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8m_4524_150_16_811['model'] = 'm_4524_150_16_811'
 
-pix_size = geotrans[1]
+resulttest_yolov8m_6040_150_16_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_811\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8m_6040_150_16_811['model'] = 'm_6040_150_16_811'
 
+resulttest_yolov8m_6040_150_16_721 = pd.read_json(r"D:\MAS_DataScience\training\yolov8m_6040_150_16_721\test_val"
+                                                  r"\predictions.json")
+resulttest_yolov8m_6040_150_16_721['model'] = 'm_6040_150_16_721'
 
-#image = f"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_cropped\swissimage-dop10_2021_2665-1258_0.1_2056_cropped.tif"
-results = model.predict(source=image, line_width=1, show_labels=False, conf=0.05, imgsz=992)
+df_result_testval = pd.concat(
+    [resulttest_yolov8s_1632_100_8_811, resulttest_yolov8s_1632_100_16_811, resulttest_yolov8m_1632_100_16_811,
+     resulttest_yolov8m_3408_150_16_811, resulttest_yolov8m_4524_150_16_811, resulttest_yolov8m_6040_150_16_811,
+     resulttest_yolov8m_6040_150_16_721])
 
-for result in results:
-    # detection
-    #print(result.boxes.xyxy)   # box with xyxy format, (N, 4)
-    #print(result.boxes.xywh)    # box with xywh format, (N, 4)
-    xywh = result.boxes.xywh
-    xywh_list = xywh.tolist()
-    x = [i[0] for i in xywh_list]
-    y = [i[1] for i in xywh_list]
-    w = [i[2] for i in xywh_list]
-    h = [i[3] for i in xywh_list]
-    #print(result.boxes.xyxyn)   # box with xyxy format but normalized, (N, 4)
-    #print(result.boxes.xywhn)   # box with xywh format but normalized, (N, 4)
-    #print(result.boxes.conf)    # confidence score, (N, 1)
-    conf = result.boxes.conf
-    conf_list = conf.tolist()
-    #print(result.boxes.cls)     # cls, (N, 1)
-    cls = result.boxes.cls
-    cls_list = cls.tolist()
+classes = {0: 'Abwasser-eckig', 1: 'Abwasser-rund', 2: 'Abwasser-Einlaufschacht-eckig',
+           3: 'Abwasser-Einlaufschacht-rund', 4: 'andere-eckig', 5: 'andere-rund'}
 
-    df = pd.DataFrame(list(zip(cls_list, conf_list, x, y, w, h)),
-                      columns=['class', 'confidence', 'pixel_x', 'pixel_y', 'pixel_w', 'pixel_h'])
+df_result_testval['class'] = df_result_testval['category_id'].map(classes)
 
-    df['origin_x'] = minx
-    df['origin_y'] = maxy
-    df['d_x'] = df['pixel_x'] * pix_size
-    df['d_y'] = df['pixel_y'] * pix_size
-    df['x'] = df['origin_x'] + df['d_x']
-    df['y'] = df['origin_y'] - df['d_y']
+#add data_augmentation methode
+df_result_testval['da_methode'] = None
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
+                                           'sharpen', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_gray'),
+                                           'gray', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_bgr'),
+                                           'bgr', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_grb'),
+                                           'grb', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_cm1'),
+                                           'contrast_decrease', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_cp2'),
+                                           'contrast_increase', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_escp2'),
+                                           'contrast_increase_sharpen_emboss', df_result_testval['da_methode'])
+df_result_testval['da_methode'] = df_result_testval['da_methode'].fillna('orig')
 
-    df['class'] = df['class'].astype('int')
+# add image_name
+df_result_testval['image'] = None
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
+                                      df_result_testval['image_id'].str.replace('_sh', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('_grey'),
+                                      df_result_testval['image_id'].str.replace('_gray', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('bgr'),
+                                      df_result_testval['image_id'].str.replace('_bgr', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('grb'),
+                                      df_result_testval['image_id'].str.replace('_grb', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('_cm1'),
+                                      df_result_testval['image_id'].str.replace('_cm1', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('_cp2'),
+                                      df_result_testval['image_id'].str.replace('_cp2', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = np.where(df_result_testval['image_id'].str.endswith('_escp2'),
+                                      df_result_testval['image_id'].str.replace('_escp2', '', regex=True),
+                                      df_result_testval['image'])
+df_result_testval['image'] = df_result_testval['image'].fillna(df_result_testval['image_id'])
 
-    df.to_csv(r"D:\MAS_DataScience\Test\yolov8m_4524_150_16_721_60_escp2.csv", sep=';', index=False)
+df_result_testval['x'] = df_result_testval['bbox'].str[0]
+df_result_testval['y'] = df_result_testval['bbox'].str[1]
+df_result_testval['w'] = df_result_testval['bbox'].str[2]
+df_result_testval['h'] = df_result_testval['bbox'].str[3]
+
+print(df_result_testval.head(20).to_string())
+
+df_result_group_image = df_result_testval.groupby(['image_id', 'model', 'da_methode'])[['score']]\
+    .agg(['count', 'mean']).reset_index()
+
+#print(df_result_group_image.to_string())
+
+df_result_group_da_methode = df_result_testval.groupby(['class', 'model', 'da_methode'])\
+    .agg(class_count=('score', 'count'), score_mean=('score', 'mean')).reset_index()
+
+print(df_result_group_da_methode.info())
+
+sns.set_style('whitegrid')
+ax = sns.barplot(data=df_result_group_da_methode, x="class", y="score_mean", hue="da_methode", errorbar=None)
+ax.set_yticks(np.arange(0, 1.1, 0.1))
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
+ax.set_yticklabels(ax.get_yticklabels(), size=8)
+ax.set(xlabel=None, ylabel='mean score')
+plt.subplots_adjust(right=0.72, bottom=0.3)
+plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0, fontsize=8)
+plt.title('Vergleich Precision')
+#plt.savefig(r"D:\MAS_DataScience\plots\testval_percision_per_class.png", dpi=300)
+plt.show()
+plt.cla()
+
+sns.catplot(data=df_result_testval, x="class", y="score", kind='boxen')
+plt.show()
+plt.cla()
+
+df_result_group_model_da_methode = df_result_testval.groupby(['model', 'da_methode'])\
+    .agg(class_count=('score', 'count'), score_mean=('score', 'mean')).reset_index()
+
+df_result_group_model_da_methode_pivot = df_result_group_model_da_methode.pivot(index='model', columns='da_methode', values='score_mean')
+sns.heatmap(df_result_group_model_da_methode_pivot, cmap="crest", annot=True, fmt=".1f")
+plt.show()
+plt.cla()
