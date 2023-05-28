@@ -65,4 +65,9 @@ for result in results:
 
     df['class'] = df['class'].astype('int')
 
+    classes = {0: 'Abwasser-eckig', 1: 'Abwasser-rund', 2: 'Abwasser-Einlaufschacht-eckig',
+               3: 'Abwasser-Einlaufschacht-rund', 4: 'andere-eckig', 5: 'andere-rund'}
+
+    df['class_name'] = df['class'].map(classes)
+
     df.to_csv(r"D:\MAS_DataScience\Test\yolov8m_4524_150_16_cm1_70.csv", sep=';', index=False)
