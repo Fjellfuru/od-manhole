@@ -1,12 +1,13 @@
 import os
 from image_preparation.image_cropper import ImageCropper
 from image_preparation.image_splitter import ImageSplitter
-import image_preparation.image_sorter as soi
 from data_augmentation.data_augmentation import DataAugmentation
 from image_preparation.image_sorter import ImageSorter
 from labeling.image_labeler import ImageLabeler
 from splitting_into_train_val_test.dataset_splitter import DatasetSplitter
 
+
+# directories for labeling process --> please change for your enviroment
 dir_orig: str = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10\grid"
 dir_cropped: str = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_cropped"
 dir_splitted: str = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted"
@@ -15,6 +16,7 @@ dir_corrected_grid: str = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitt
 dir_label: str = r"D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted_label"
 dir_dataset_train_model: str = r"D:\MAS_DataScience\aerial_images_train_model"
 
+# decide whether to run a step of the labeling process
 execute_cropper: str = 'no'
 execute_image_splitter: str = 'no'
 execute_image_sorter_not_requiered: str = 'no'
@@ -23,6 +25,7 @@ execute_image_sorter_corrected: str = 'no'
 execute_labeler: str = 'no'
 execute_dataset_splitter: str = 'yes'
 
+# labeling process
 if __name__ == "__main__":
     if execute_cropper == 'yes':
         image_list_orig = [os.path.join(dir_orig, image) for image in os.listdir(dir_orig) if image.endswith(".tif")]

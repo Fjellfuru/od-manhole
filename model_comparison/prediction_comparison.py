@@ -67,7 +67,7 @@ df_result_testval['image_name'] = None
 df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
                                       df_result_testval['image_id'].str.replace('_sh', '', regex=True),
                                       df_result_testval['image_name'])
-df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.endswith('_grey'),
+df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.endswith('_gray'),
                                       df_result_testval['image_id'].str.replace('_gray', '', regex=True),
                                       df_result_testval['image_name'])
 df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.endswith('bgr'),
