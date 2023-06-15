@@ -4,8 +4,8 @@ import psycopg2
 from sqlalchemy import create_engine, text
 from matplotlib import pyplot as plt
 import seaborn as sns
-import os
 
+# read results (json) from prediction
 resulttest_yolov8s_1632_100_8_811 = pd.read_json(r"D:\MAS_DataScience\training\yolov8s_1632_100_8_811\test_val"
                                                  r"\predictions.json")
 resulttest_yolov8s_1632_100_8_811['model'] = 's_1632_100_8_811'
@@ -34,6 +34,7 @@ resulttest_yolov8m_6040_150_16_721 = pd.read_json(r"D:\MAS_DataScience\training\
                                                   r"\predictions.json")
 resulttest_yolov8m_6040_150_16_721['model'] = 'm_6040_150_16_721'
 
+# concat all data frames
 df_result_testval = pd.concat(
     [resulttest_yolov8s_1632_100_8_811, resulttest_yolov8s_1632_100_16_811, resulttest_yolov8m_1632_100_16_811,
      resulttest_yolov8m_3408_150_16_811, resulttest_yolov8m_4524_150_16_811, resulttest_yolov8m_6040_150_16_811,
@@ -44,7 +45,7 @@ classes = {0: 'Abwasser-eckig', 1: 'Abwasser-rund', 2: 'Abwasser-Einlaufschacht-
 
 df_result_testval['class'] = df_result_testval['category_id'].map(classes)
 
-#add data_augmentation methode
+#add data_augmentation methode to data frames
 df_result_testval['da_methode'] = None
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
                                            'sharpen', df_result_testval['da_methode'])
@@ -62,7 +63,7 @@ df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.end
                                            'contrast_increase_sharpen_emboss', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = df_result_testval['da_methode'].fillna('orig')
 
-# add image_name
+# add image_name to data frames
 df_result_testval['image_name'] = None
 df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
                                       df_result_testval['image_id'].str.replace('_sh', '', regex=True),
@@ -87,33 +88,45 @@ df_result_testval['image_name'] = np.where(df_result_testval['image_id'].str.end
                                       df_result_testval['image_name'])
 df_result_testval['image_name'] = df_result_testval['image_name'].fillna(df_result_testval['image_id'])
 
-
+# extract values for boundigbox x, y, width and height
 df_result_testval['pixel_x'] = df_result_testval['bbox'].str[0]
 df_result_testval['pixel_y'] = df_result_testval['bbox'].str[1]
 df_result_testval['pixel_w'] = df_result_testval['bbox'].str[2]
 df_result_testval['pixel_h'] = df_result_testval['bbox'].str[3]
+df_result_testval['pixel_x_center'] = df_result_testval['pixel_x'] + (df_result_testval['pixel_w'] / 2)
+df_result_testval['pixel_y_center'] = df_result_testval['pixel_y'] + (df_result_testval['pixel_h'] / 2)
 
 #print(df_result_testval.to_string())
 
+# connect do database
 engine = create_engine("postgresql+psycopg2://postgres@localhost/mas_ds")
 conn = engine.connect()
+
+# select corrected grid and there coordinates
 query = text("SELECT g.top AS origin_y , g.left AS origin_x, CONCAT(g.image, '_cropped_', g.image_nr) AS image_name "
              "FROM public.grid g WHERE g.corrected = 1")
 coordintes_grid = pd.read_sql_query(query, conn)
 
 df_testval_prediction = pd.merge(df_result_testval, coordintes_grid, how="left", on=["image_name"])
 
+# pixel size
 pix_size = 0.1
-df_testval_prediction['d_x'] = df_testval_prediction['pixel_x'] * pix_size
-df_testval_prediction['d_y'] = df_testval_prediction['pixel_y'] * pix_size
+
+# calculate LV95 coordinate
+df_testval_prediction['d_x'] = df_testval_prediction['pixel_x_center'] * pix_size
+df_testval_prediction['d_y'] = df_testval_prediction['pixel_y_center'] * pix_size
 df_testval_prediction['x'] = df_testval_prediction['origin_x'] + df_testval_prediction['d_x']
 df_testval_prediction['y'] = df_testval_prediction['origin_y'] - df_testval_prediction['d_y']
+print(df_testval_prediction.head(20).to_string())
 
 df_for_db = df_testval_prediction[['model', 'image_name', 'da_methode', 'class', 'score', 'x', 'y']]
 print(df_for_db.info())
 print(df_for_db.head(20).to_string())
 
-df_for_db.to_sql('manhole_test_prediction', con=conn, schema='public', if_exists='replace', index=False)
+csv_path = r"D:\MAS_DataScience\training\coordinates.csv"
+df_for_db.to_csv(csv_path, sep=';')
+
+df_for_db.to_sql('manhole_test_prediction', con=conn, schema='public', if_exists='replace', index=True)
 conn.commit()
 conn.close()
 # Display a message that data has been inserted
