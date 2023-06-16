@@ -52,7 +52,7 @@ statistic_true_class = pd.read_sql_query(query_true_class, conn)
 
 sns.set_style('whitegrid')
 ax = sns.barplot(data=statistic_true_class, x="class_prediction", y="predict_true_count", hue="model",
-                 hue_order=hue_order, errorbar=None)
+                 hue_order=hue_order, errorbar=None, estimator=sum)
 # ax.set_yticks(np.arange(-15, 2, 1))
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
 ax.set_yticklabels(ax.get_yticklabels(), size=8)
@@ -71,7 +71,7 @@ statistic_true_group_class = pd.read_sql_query(query_true_group_class, conn)
 
 sns.set_style('whitegrid')
 ax = sns.barplot(data=statistic_true_group_class, x="class_prediction", y="predict_true_count", hue="model",
-                 hue_order=hue_order, errorbar=None)
+                 hue_order=hue_order, errorbar=None, estimator=sum)
 # ax.set_yticks(np.arange(-15, 2, 1))
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right', size=8)
 ax.set_yticklabels(ax.get_yticklabels(), size=8)
