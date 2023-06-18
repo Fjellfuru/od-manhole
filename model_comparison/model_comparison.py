@@ -35,7 +35,7 @@ def plot_results_overlay(result_csv: str, result_title: str, save_name: str):
     axes[1, 2].set_axis_off()
     plt.savefig(dest_path, dpi=300)
     #plt.show()
-    plt.cla()
+    plt.close(fig)
 
 
 def compare_metrics_each_model():
