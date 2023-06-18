@@ -3,38 +3,51 @@ import numpy as np
 from matplotlib import pyplot as plt
 import seaborn as sns
 import os
+from pathlib import Path
 
 HOME = r"D:\MAS_DataScience\training"
 
 
-def plot_results_overlay(result_csv: str, result_title: str):
+def plot_results_overlay(result_csv: str, result_title: str, save_name: str):
     # read csv
     df = pd.read_csv(result_csv)
     df.columns = df.columns.str.lstrip()
+    dest_path = Path(r"D:\MAS_DataScience\Dokumentation\plots\modellevaluation") / f"{save_name}{'.png'}"
 
     # generating subplots
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(18, 6), tight_layout=True)
-    fig.suptitle(result_title, fontsize=16)
+    fig.suptitle(result_title, fontsize=16, fontweight='bold')
     #plotting the dataframes
-    df.plot(ax=axes[0][0], x='epoch', y=['train/box_loss', 'val/box_loss'])
-    df.plot(ax=axes[0][1], x='epoch', y=['train/cls_loss', 'val/cls_loss'])
-    df.plot(ax=axes[0][2], x='epoch', y=['train/dfl_loss', 'val/dfl_loss'])
-    df.plot(ax=axes[1][0], x='epoch', y=['metrics/precision(B)', 'metrics/recall(B)'])
-    df.plot(ax=axes[1][1], x='epoch', y=['metrics/mAP50(B)', 'metrics/mAP50-95(B)'])
-    # displaying the title
-    plt.show()
+    df.plot(ax=axes[0][0], x='epoch', y=['train/box_loss', 'val/box_loss']).legend(prop={'size': 14})
+    df.plot(ax=axes[0][1], x='epoch', y=['train/cls_loss', 'val/cls_loss']).legend(prop={'size': 14})
+    df.plot(ax=axes[0][2], x='epoch', y=['train/dfl_loss', 'val/dfl_loss']).legend(prop={'size': 14})
+    df.plot(ax=axes[1][0], x='epoch', y=['metrics/precision(B)', 'metrics/recall(B)']).legend(prop={'size': 14})
+    df.plot(ax=axes[1][1], x='epoch', y=['metrics/mAP50(B)', 'metrics/mAP50-95(B)']).legend(prop={'size': 14})
+    axes[1, 2].set_axis_off()
+    plt.savefig(dest_path, dpi=300)
+    #plt.show()
+    plt.cla()
 
 
 def compare_metrics_each_model():
-    # plot_results_overlay(os.path.join(HOME, 'yolov8s_1632_100_8/results.csv'), 'S-100-8')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8s_1632_100_16/results.csv'), 'S-100-16')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8m_1632_100_16/results.csv'), 'M-100-16')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8s_3408_150_16/results.csv'), 'S-150-16')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8m_3408_150_16/results.csv'), 'M-150-16')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8s_3408_150_64/results.csv'), 'S-150-64')
-    # plot_results_overlay(os.path.join(HOME, 'yolov8m_4524_150_16/results.csv'), 'M-150-16 4524 Images')
-    plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_811/results.csv'), 'M-150-16 6040 Images Split 811')
-    plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_721/results.csv'), 'M-150-16 6040 Images Split 721')
+    plot_results_overlay(os.path.join(HOME, 'yolov8s_1632_100_8_811/results.csv'),
+                         'Metrics S-100-8 \n 1632 Bilder, Split 80/10/10', 's_1632_100_8_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8s_1632_100_16_811/results.csv'),
+                         'Metrics S-100-16 \n 1632 Bilder, Split 80/10/10', 's_1632_100_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8m_1632_100_16_811/results.csv'),
+                         'Metrics M-100-16 \n 1632 Bilder, Split 80/10/10', 'm_1632_100_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8s_3408_150_16_811/results.csv'),
+                         'Matrics S-150-16 \n 3408 Bilder, Split 80/10/10', 's_3408_150_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8s_3408_150_64_811/results.csv'),
+                         'Metrics S-150-64 \n 3408 Bilder, Split 8/1/1', 's_3408_150_64_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8m_3408_150_16_811/results.csv'),
+                         'Metrics M-150-16 \n 3408 Bilder, Split 80/10/10', 'm_3408_150_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8m_4524_150_16_811/results.csv'),
+                         'Metrics M-150-16 \n 4524 Bilder, Split 80/10/10', 'm_4524_150_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_811/results.csv'),
+                         'Metrics M-150-16 \n 6040 Bilder, Split 80/10/10', 'm_6040_150_16_811_metrics')
+    plot_results_overlay(os.path.join(HOME, 'yolov8m_6040_150_16_721/results.csv'),
+                         'Metrics M-150-16 \n 6040 Bilder, Split 70/20/10', 'm_6040_150_16_721_metrics')
 
 
 def compare_metrics_over_all_models():
