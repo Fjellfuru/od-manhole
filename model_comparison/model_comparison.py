@@ -6,13 +6,13 @@ import os
 from pathlib import Path
 
 HOME = r"D:\MAS_DataScience\training"
-
+path_modelevaluation = r"D:\MAS_DataScience\Dokumentation\plots\modellevaluation"
 
 def plot_results_overlay(result_csv: str, result_title: str, save_name: str):
     # read csv
     df = pd.read_csv(result_csv)
     df.columns = df.columns.str.lstrip()
-    dest_path = Path(r"D:\MAS_DataScience\Dokumentation\plots\modellevaluation") / f"{save_name}{'.png'}"
+    dest_path = Path(path_modelevaluation) / f"{save_name}{'.png'}"
 
     # generating subplots
     fig, axes = plt.subplots(nrows=2, ncols=3, figsize=(18, 6), tight_layout=True)
@@ -50,7 +50,7 @@ def compare_metrics_each_model():
                          'Metrics M-150-16 \n 6040 Bilder, Split 70/20/10', 'm_6040_150_16_721_metrics')
 
 
-def compare_metrics_over_all_models():
+def read_metrics_over_all_models():
     yolov8s_1632_100_8_811 = pd.read_csv(os.path.join(HOME, 'yolov8s_1632_100_8_811/results.csv'))
     yolov8s_1632_100_8_811.columns = yolov8s_1632_100_8_811.columns.str.lstrip()
     yolov8s_1632_100_8_811['model'] = 's_1632_100_8_811'
@@ -62,6 +62,14 @@ def compare_metrics_over_all_models():
     yolov8m_1632_100_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_1632_100_16_811/results.csv'))
     yolov8m_1632_100_16_811.columns = yolov8m_1632_100_16_811.columns.str.lstrip()
     yolov8m_1632_100_16_811['model'] = 'm_1632_100_16_811'
+
+    yolov8s_3408_150_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8s_3408_150_16_811/results.csv'))
+    yolov8s_3408_150_16_811.columns = yolov8s_3408_150_16_811.columns.str.lstrip()
+    yolov8s_3408_150_16_811['model'] = 's_3408_150_16_811'
+
+    yolov8s_3408_150_64_811 = pd.read_csv(os.path.join(HOME, 'yolov8s_3408_150_64_811/results.csv'))
+    yolov8s_3408_150_64_811.columns = yolov8s_3408_150_64_811.columns.str.lstrip()
+    yolov8s_3408_150_64_811['model'] = 's_3408_150_64_811'
 
     yolov8m_3408_150_16_811 = pd.read_csv(os.path.join(HOME, 'yolov8m_3408_150_16_811/results.csv'))
     yolov8m_3408_150_16_811.columns = yolov8m_3408_150_16_811.columns.str.lstrip()
@@ -79,9 +87,22 @@ def compare_metrics_over_all_models():
     yolov8m_6040_150_16_721.columns = yolov8m_6040_150_16_721.columns.str.lstrip()
     yolov8m_6040_150_16_721['model'] = 'm_6040_150_16_721'
 
-    df_model_comp = pd.concat([yolov8s_1632_100_8_811, yolov8s_1632_100_16_811, yolov8m_1632_100_16_811,
-                               yolov8m_3408_150_16_811, yolov8m_4524_150_16_811, yolov8m_6040_150_16_811,
-                               yolov8m_6040_150_16_721])
+    df_model_comp_all = pd.concat([yolov8s_1632_100_8_811, yolov8s_1632_100_16_811, yolov8m_1632_100_16_811,
+                                   yolov8s_3408_150_16_811, yolov8s_3408_150_64_811, yolov8m_3408_150_16_811,
+                                   yolov8m_4524_150_16_811, yolov8m_6040_150_16_811, yolov8m_6040_150_16_721])
+
+    df_model_comp_part = pd.concat([yolov8m_1632_100_16_811, yolov8m_3408_150_16_811,
+                                   yolov8m_4524_150_16_811, yolov8m_6040_150_16_811, yolov8m_6040_150_16_721])
+
+    return df_model_comp_all, df_model_comp_part
+
+
+def create_df_train_val_metrics_over_all_models(df_model_comp):
+    """
+    Creates a DataFrame to compare the metrics from train and validation
+    :param df_model_comp_all:
+    :return:
+    """
 
     # Create Data Frame for train and val comparison
     df_model_comp_train = df_model_comp.loc[:, ['epoch', 'model', 'train/box_loss', 'train/cls_loss', 'train/dfl_loss']]
@@ -97,6 +118,10 @@ def compare_metrics_over_all_models():
 
     df_model_comp_train_val = pd.concat([df_model_comp_train, df_model_comp_val])
 
+    return df_model_comp_train_val
+
+
+def compare_metrics_over_all_models(df_model_comp, df_model_comp_train_val, nameext: str):
     # Comparison mAP50
     sns.set_style('whitegrid')
     ax = sns.lineplot(data=df_model_comp, x="epoch", y="metrics/mAP50(B)", hue="model", lw=1)
@@ -106,7 +131,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='mAP50')
     plt.legend(loc='lower right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich mAP50')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_map50_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_map50_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -119,7 +144,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='mAP50')
     plt.legend(loc='lower right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich mAP50-95')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_map50-95_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_map50-95_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -132,7 +157,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='mAP50')
     plt.legend(loc='lower right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich Recall')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_recall_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_recall_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -145,7 +170,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='mAP50')
     plt.legend(loc='lower right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich Precision')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_precision_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_precision_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -157,7 +182,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='box loss')
     plt.legend(loc='upper right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich Box-Loss')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_box_loss_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_box_loss_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -169,7 +194,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='cls loss')
     plt.legend(loc='upper right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich Class-Loss')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_cls_loss_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_cls_loss_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
@@ -181,7 +206,7 @@ def compare_metrics_over_all_models():
     ax.set(xlabel='Epoche', ylabel='box loss')
     plt.legend(loc='upper right', borderaxespad=0, fontsize=8)
     plt.title('Vergleich Box-Loss')
-    plt.savefig(r"D:\MAS_DataScience\Test\training_dfl_loss_epoch.png", dpi=300)
+    plt.savefig(Path(path_modelevaluation) / f"{'training_dfl_loss_epoch'}{'_'}{nameext}{'.png'}", dpi=300)
     plt.show()
     plt.cla()
 
