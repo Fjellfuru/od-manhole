@@ -48,7 +48,7 @@ df_result_testval['class'] = df_result_testval['category_id'].map(classes)
 #add data_augmentation methode to data frames
 df_result_testval['da_methode'] = None
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_sh'),
-                                           'sharpen', df_result_testval['da_methode'])
+                                           'sh', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_gray'),
                                            'gray', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_bgr'),
@@ -56,11 +56,11 @@ df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.end
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_grb'),
                                            'grb', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_cm1'),
-                                           'contrast_decrease', df_result_testval['da_methode'])
+                                           'cm1', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_cp2'),
-                                           'contrast_increase', df_result_testval['da_methode'])
+                                           'cp2', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = np.where(df_result_testval['image_id'].str.endswith('_escp2'),
-                                           'contrast_increase_sharpen_emboss', df_result_testval['da_methode'])
+                                           'escp2', df_result_testval['da_methode'])
 df_result_testval['da_methode'] = df_result_testval['da_methode'].fillna('orig')
 
 # add image_name to data frames
