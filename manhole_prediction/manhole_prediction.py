@@ -5,8 +5,8 @@ from ultralytics import YOLO
 
 
 model = YOLO(f"D:\MAS_DataScience\yolo_manhole\yolov8m_6040_150_16_721.pt")
-image_orig = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2602-1200_0.1_2056_cropped_70.tif'
-image = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2602-1200_0.1_2056_cropped_70_cm1.tif'
+image_orig = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2603-1199_0.1_2056_cropped_19.tif'
+image = f'D:\MAS_DataScience\Luftbilder_Swisstopo_10_10_splitted\swissimage-dop10_2021_2603-1199_0.1_2056_cropped_19_grb.tif'
 
 # read image and get minx, maxy and pix_size
 dataset = gdal.Open(image_orig, gdal.GA_ReadOnly)
