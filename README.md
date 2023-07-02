@@ -23,7 +23,7 @@ The aim of the labeling process is to generate labeled aerial images that can be
 5. Crop swisstopo original images --> 9920 x 9920 pixels
 6. Create grid with 100 cells per cropped original image (e.g. with QGIS) and insert into database (public.grid)
 7. Intersect cropped images and grid (e.g. with FME https://github.com/Fjellfuru/od-manhole/blob/master/utilities/fme_workbench/clipp_grid_image.fmw) and update database (public.grid)
-8. Update image_nr for every grid_cell (public.grid). You can find an example at 
+8. Update image_nr for every grid_cell (public.grid). You can find an example at https://github.com/Fjellfuru/od-manhole/blob/master/utilities/sql_scripts/Example_UPDATE_image_nr.sql
 9. The following script can be used for the data augmentation, the actual labeling and the preparation of the training data set: https://github.com/Fjellfuru/od-manhole/blob/master/labeling_process.py
 
 
@@ -56,7 +56,7 @@ To compare different trained models, I performed a validation with a test data s
 You can find the validation workflow Jupyter Notebook https://github.com/Fjellfuru/od-manhole/blob/master/utilities/jupyter_notebook/od_manhole_yolov8-object-detection.ipynb \
 After validation, the predicted manhole covers can be compared to the true manhole covers. The following steps must be carried out for this:
 1. Import the predicted manhole covers into the database (https://github.com/Fjellfuru/od-manhole/blob/master/model_comparison/prediction_comparison_data_preparation.py)
-2. Create point geometry for predicted manhole covers ()
+2. Create point geometry for predicted manhole covers (https://github.com/Fjellfuru/od-manhole/blob/master/utilities/sql_scripts/SELECT_UPDATE_geom_manhole_test_prediction.sql)
 3. To compare the metrics and data augmentation methods, you can use the following scripts (Please customize the intput results):
    * https://github.com/Fjellfuru/od-manhole/blob/master/model_comparison/model_comparison.py
    * https://github.com/Fjellfuru/od-manhole/blob/master/model_comparison/prediction_comparison_plots.py
