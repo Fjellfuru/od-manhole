@@ -36,7 +36,7 @@ The aim of the labeling process is to generate labeled aerial images that can be
 ### Workflow
 You can find everything you need in the Jupyter Notebook https://github.com/Fjellfuru/od-manhole/blob/master/utilities/jupyter_notebook/od_manhole_yolov8-object-detection.ipynb
 
-## Compare different traind models
+## Compare different traind models (Training)
 To compare different trained models after experimentally training
 ### What do you need
  * Google Colab
@@ -46,7 +46,7 @@ To compare different trained models after experimentally training
 To compare the metrics of the different models, you can use the following script:
    * https://github.com/Fjellfuru/od-manhole/blob/master/model_comparison/model_comparison.py
 
-## Compare different traind models
+## Compare different traind models (Validation)
 To compare different trained models, I performed a validation with a test data set for all models.
 ### What do you need
  * Google Colab
